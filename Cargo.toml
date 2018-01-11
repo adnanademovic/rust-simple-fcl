@@ -1,0 +1,14 @@
+[package]
+authors = ["Adnan Ademovic <adnanademovic100@gmail.com>"]
+description = "Simple subset of bindings for the FCL library"
+license = "MIT"
+name = "simple-fcl"
+readme = "README.md"
+repository = "https://github.com/adnanademovic/rust-simple-fcl"
+version = "0.0.1"
+
+[dependencies]
+
+[dependencies.simple-fcl-sys]
+path = "simple-fcl-sys"
+version = "0.0.1"
