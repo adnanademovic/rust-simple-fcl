@@ -1,5 +1,7 @@
 #![deny(warnings)]
 
+#[cfg(test)]
+extern crate assert;
 pub extern crate nalgebra;
 pub extern crate simple_fcl_sys as raw;
 
@@ -66,6 +68,44 @@ pub fn collide(
             rotation_b.matrix().as_slice().as_ptr(),
             translation_b.vector.as_slice().as_ptr(),
         ) != 0
+    }
+}
+
+#[derive(Clone, Debug, Default)]
+pub struct DistanceOptions {
+    absolute_error: f64,
+    relative_error: f64,
+}
+
+pub fn distance(
+    model_a: &Model,
+    rotation_a: &Rotation3f,
+    translation_a: &Translation3f,
+    model_b: &Model,
+    rotation_b: &Rotation3f,
+    translation_b: &Translation3f,
+    options: &DistanceOptions,
+) -> Option<f64> {
+    let mut success = 0;
+    let mut distance = 0.0;
+    unsafe {
+        raw::fcl_distance(
+            model_a.model_ptr,
+            rotation_a.matrix().as_slice().as_ptr(),
+            translation_a.vector.as_slice().as_ptr(),
+            model_b.model_ptr,
+            rotation_b.matrix().as_slice().as_ptr(),
+            translation_b.vector.as_slice().as_ptr(),
+            options.relative_error,
+            options.absolute_error,
+            &mut success,
+            &mut distance,
+        );
+    }
+    if success != 0 {
+        Some(distance)
+    } else {
+        None
     }
 }
 
