@@ -50,12 +50,12 @@ pub struct Model {
 }
 
 pub fn collide(
-    model_a: Model,
-    rotation_a: Rotation3f,
-    translation_a: Translation3f,
-    model_b: Model,
-    rotation_b: Rotation3f,
-    translation_b: Translation3f,
+    model_a: &Model,
+    rotation_a: &Rotation3f,
+    translation_a: &Translation3f,
+    model_b: &Model,
+    rotation_b: &Rotation3f,
+    translation_b: &Translation3f,
 ) -> bool {
     unsafe {
         raw::fcl_collide(
@@ -68,3 +68,6 @@ pub fn collide(
         ) != 0
     }
 }
+
+#[cfg(test)]
+mod tests;
