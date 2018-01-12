@@ -254,3 +254,50 @@ fn distance_is_right_with_translation() {
         0.001,
     );
 }
+
+#[test]
+fn trivial_distance_vector() {
+    let model_a = make_model(&[
+        Vec3f::new(10.0, 0.0, 0.0),
+        Vec3f::new(0.0, 0.0, 1.0),
+        Vec3f::new(0.0, 0.0, -1.0),
+    ]);
+    let model_b = make_model(&[
+        Vec3f::new(5.0, -10.0, -10.0),
+        Vec3f::new(5.0, -10.0, 10.0),
+        Vec3f::new(5.0, 10.0, 0.0),
+    ]);
+
+    let rotation_none = Rotation3f::identity();
+    let translation_none = Translation3f::new(0.0, 0.0, 0.0);
+
+    assert!(
+        distance_points(
+            &model_a,
+            &rotation_none,
+            &translation_none,
+            &model_b,
+            &rotation_none,
+            &translation_none,
+            &DistanceOptions::default(),
+        ).is_none()
+    );
+
+    let d = distance_points(
+        &model_a,
+        &rotation_none,
+        &Translation3f::new(0.3, 2.0, 0.2),
+        &model_b,
+        &rotation_none,
+        &Translation3f::new(11.0, 0.0, 0.0),
+        &DistanceOptions::default(),
+    ).unwrap();
+
+    close(d.distance, 5.7, 0.001);
+    close(d.point_a[0], 10.3, 0.001);
+    close(d.point_a[1], 2.0, 0.001);
+    close(d.point_a[2], 0.2, 0.001);
+    close(d.point_b[0], 16.0, 0.001);
+    close(d.point_b[1], 2.0, 0.001);
+    close(d.point_b[2], 0.2, 0.001);
+}

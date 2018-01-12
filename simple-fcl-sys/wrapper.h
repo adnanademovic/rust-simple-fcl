@@ -23,8 +23,8 @@ int fcl_collide(const fcl_model_t model_ptr_1, const float* rotate_1,
 void fcl_distance(const fcl_model_t model_ptr_1, const float* rotate_1,
                   const float* translate_1, const fcl_model_t model_ptr_2,
                   const float* rotate_2, const float* translate_2,
-                  double rel_error, double abs_error, int* success,
-                  double* distance);
+                  int enable_nearest_points, double rel_error, double abs_error,
+                  int* success, double* distance, float* p1, float* p2);
 
 #ifdef __cplusplus
 }

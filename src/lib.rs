@@ -88,6 +88,7 @@ pub fn distance(
 ) -> Option<f64> {
     let mut success = 0;
     let mut distance = 0.0;
+    let mut points = [0.0; 6];
     unsafe {
         raw::fcl_distance(
             model_a.model_ptr,
@@ -96,14 +97,63 @@ pub fn distance(
             model_b.model_ptr,
             rotation_b.matrix().as_slice().as_ptr(),
             translation_b.vector.as_slice().as_ptr(),
+            0,
             options.relative_error,
             options.absolute_error,
             &mut success,
             &mut distance,
+            points[0..3].as_mut_ptr(),
+            points[3..6].as_mut_ptr(),
         );
     }
     if success != 0 {
         Some(distance)
+    } else {
+        None
+    }
+}
+
+pub struct DistancePoints {
+    pub distance: f64,
+    pub point_a: Vec3f,
+    pub point_b: Vec3f,
+}
+
+pub fn distance_points(
+    model_a: &Model,
+    rotation_a: &Rotation3f,
+    translation_a: &Translation3f,
+    model_b: &Model,
+    rotation_b: &Rotation3f,
+    translation_b: &Translation3f,
+    options: &DistanceOptions,
+) -> Option<DistancePoints> {
+    let mut success = 0;
+    let mut distance = 0.0;
+    let mut points = [0.0f32; 6];
+    unsafe {
+        raw::fcl_distance(
+            model_a.model_ptr,
+            rotation_a.matrix().as_slice().as_ptr(),
+            translation_a.vector.as_slice().as_ptr(),
+            model_b.model_ptr,
+            rotation_b.matrix().as_slice().as_ptr(),
+            translation_b.vector.as_slice().as_ptr(),
+            1,
+            options.relative_error,
+            options.absolute_error,
+            &mut success,
+            &mut distance,
+            points[0..3].as_mut_ptr(),
+            points[3..6].as_mut_ptr(),
+        );
+    }
+    if success != 0 {
+        Some(DistancePoints {
+            distance,
+            point_a: Vec3f::from_column_slice(&points[0..3]),
+            point_b: Vec3f::from_column_slice(&points[3..6]),
+        })
     } else {
         None
     }

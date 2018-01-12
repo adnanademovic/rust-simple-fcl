@@ -55,8 +55,8 @@ int fcl_collide(const fcl_model_t model_ptr_1, const float* rotate_1,
 void fcl_distance(const fcl_model_t model_ptr_1, const float* rotate_1,
                   const float* translate_1, const fcl_model_t model_ptr_2,
                   const float* rotate_2, const float* translate_2,
-                  double rel_error, double abs_error, int* success,
-                  double* distance) {
+                  int enable_nearest_points, double rel_error, double abs_error,
+                  int* success, double* distance, float* p1, float* p2) {
   fcl::Matrix3f r_a(rotate_1[0], rotate_1[1], rotate_1[2], rotate_1[3],
                     rotate_1[4], rotate_1[5], rotate_1[6], rotate_1[7],
                     rotate_1[8]);
@@ -68,10 +68,16 @@ void fcl_distance(const fcl_model_t model_ptr_1, const float* rotate_1,
   fcl::Vec3f t_b(translate_2[0], translate_2[1], translate_2[2]);
   fcl::CollisionObject b(*((Model*)model_ptr_2), fcl::Transform3f(r_b, t_b));
 
-  fcl::DistanceRequest request(false, rel_error, abs_error);
+  fcl::DistanceRequest request(enable_nearest_points, rel_error, abs_error);
   fcl::DistanceResult result;
   fcl::distance(&a, &b, request, result);
 
   *distance = result.min_distance;
   *success = result.min_distance > 0.0;
+  p1[0] = result.nearest_points[0][0];
+  p1[1] = result.nearest_points[0][1];
+  p1[2] = result.nearest_points[0][2];
+  p2[0] = result.nearest_points[1][0];
+  p2[1] = result.nearest_points[1][1];
+  p2[2] = result.nearest_points[1][2];
 }
