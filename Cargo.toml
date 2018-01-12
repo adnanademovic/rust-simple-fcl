@@ -8,6 +8,7 @@ repository = "https://github.com/adnanademovic/rust-simple-fcl"
 version = "0.0.1"
 
 [dependencies]
+nalgebra = "0.13.1"
 
 [dependencies.simple-fcl-sys]
 path = "simple-fcl-sys"
