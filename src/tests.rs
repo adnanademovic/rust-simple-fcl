@@ -87,3 +87,56 @@ fn rotation_orientates_correctly() {
         &translation
     ));
 }
+
+#[test]
+fn translation_moves_correctly() {
+    let model_a = make_model(&[
+        Vec3f::new(10.0, 0.0, 0.0),
+        Vec3f::new(0.0, 0.0, 1.0),
+        Vec3f::new(0.0, 0.0, -1.0),
+    ]);
+    let model_b = make_model(&[
+        Vec3f::new(5.0, 1.0, -10.0),
+        Vec3f::new(5.0, 1.0, 10.0),
+        Vec3f::new(5.0, 10.0, 0.0),
+    ]);
+
+    let rotation_none = Rotation3f::identity();
+    let translation_none = Translation3f::new(0.0, 0.0, 0.0);
+
+    assert!(!collide(
+        &model_a,
+        &rotation_none,
+        &translation_none,
+        &model_b,
+        &rotation_none,
+        &translation_none
+    ));
+
+    assert!(collide(
+        &model_a,
+        &rotation_none,
+        &Translation3f::new(0.0, 2.0, 0.0),
+        &model_b,
+        &rotation_none,
+        &translation_none
+    ));
+
+    assert!(collide(
+        &model_a,
+        &rotation_none,
+        &Translation3f::new(0.0, 5.0, 0.0),
+        &model_b,
+        &rotation_none,
+        &translation_none
+    ));
+
+    assert!(!collide(
+        &model_a,
+        &rotation_none,
+        &Translation3f::new(0.0, 12.0, 0.0),
+        &model_b,
+        &rotation_none,
+        &translation_none
+    ));
+}
