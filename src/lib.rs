@@ -11,6 +11,7 @@ pub type Translation3f = nalgebra::Translation3<f32>;
 
 pub struct ModelBuilder {
     model_ptr: raw::fcl_model_t,
+    freed: bool,
 }
 
 impl Default for ModelBuilder {
@@ -21,6 +22,15 @@ impl Default for ModelBuilder {
                 raw::fcl_model_begin(val);
                 val
             },
+            freed: false,
+        }
+    }
+}
+
+impl Drop for ModelBuilder {
+    fn drop(&mut self) {
+        if !self.freed {
+            unsafe { raw::fcl_model_free(self.model_ptr) }
         }
     }
 }
@@ -37,10 +47,11 @@ impl ModelBuilder {
         }
     }
 
-    pub fn build(self) -> Model {
+    pub fn build(mut self) -> Model {
         unsafe {
             raw::fcl_model_end(self.model_ptr);
         }
+        self.freed = true;
         Model {
             model_ptr: self.model_ptr,
         }
@@ -49,6 +60,12 @@ impl ModelBuilder {
 
 pub struct Model {
     model_ptr: raw::fcl_model_t,
+}
+
+impl Drop for Model {
+    fn drop(&mut self) {
+        unsafe { raw::fcl_model_free(self.model_ptr) }
+    }
 }
 
 pub fn collide(
