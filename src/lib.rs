@@ -230,7 +230,7 @@ pub struct DistancePoints {
     pub point_b: Vec3f,
 }
 
-/// Perform distance check between two models transformed in space.
+/// Determine closest points between two models transformed in space.
 ///
 /// Each model has a translation and rotation applied to it.
 /// So the model center is moved by the translation, while the model is rotated
