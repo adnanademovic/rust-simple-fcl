@@ -7,6 +7,11 @@ readme = "README.md"
 repository = "https://github.com/adnanademovic/rust-simple-fcl"
 version = "0.0.3"
 
+[badges]
+
+[badges.travis-ci]
+repository = "adnanademovic/rust-simple-fcl"
+
 [dependencies]
 nalgebra = "0.13.1"
 
