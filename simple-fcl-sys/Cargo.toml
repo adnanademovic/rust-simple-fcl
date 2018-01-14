@@ -1,11 +1,11 @@
 [package]
 authors = ["Adnan Ademovic <adnanademovic100@gmail.com>"]
-description = "Raw bindings for the FLANN library for use in simple-fcl"
+description = "Raw bindings for the FCL library for use in simple-fcl"
 license = "MIT"
 name = "simple-fcl-sys"
 readme = "../README.md"
 repository = "https://github.com/adnanademovic/rust-simple-fcl"
-version = "0.0.2"
+version = "0.0.3"
 
 [package.metadata.docs.rs]
 features = ["skip_cc"]
