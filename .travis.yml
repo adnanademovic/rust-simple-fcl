@@ -2,8 +2,10 @@ language: rust
 addons:
   apt:
     sources:
+      - sourceline: 'ppa:libccd-debs/ppa'
       - sourceline: 'ppa:fcl-debs/ppa'
     packages:
+      - libccd2
       - libccd-dev
       - libfcl0
       - libfcl-dev
