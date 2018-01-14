@@ -5,8 +5,14 @@ license = "MIT"
 name = "simple-fcl-sys"
 readme = "../README.md"
 repository = "https://github.com/adnanademovic/rust-simple-fcl"
-version = "0.0.1"
+version = "0.0.2"
+
+[package.metadata.docs.rs]
+features = ["skip_cc"]
 
 [build-dependencies]
 bindgen = "0.32.1"
 cc = "1.0.3"
+
+[features]
+skip_cc = []

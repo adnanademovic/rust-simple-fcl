@@ -1,10 +1,12 @@
 extern crate bindgen;
+#[cfg(not(feature = "skip_cc"))]
 extern crate cc;
 
 use std::env;
 use std::path::PathBuf;
 
-fn main() {
+#[cfg(not(feature = "skip_cc"))]
+fn build_code() {
     println!("cargo:rustc-link-lib=boost_system");
     println!("cargo:rustc-link-lib=fcl");
 
@@ -12,6 +14,13 @@ fn main() {
         .cpp(true)
         .file("wrapper.cpp")
         .compile("wrapper.a");
+}
+
+#[cfg(feature = "skip_cc")]
+fn build_code() {}
+
+fn main() {
+    build_code();
 
     let bindings = bindgen::Builder::default()
         .header("wrapper.h")
