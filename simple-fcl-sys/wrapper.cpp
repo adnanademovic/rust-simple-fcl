@@ -1,11 +1,16 @@
 #include <fcl/BVH/BVH_model.h>
 #include <fcl/collision.h>
+#include <fcl/config.h>
 #include <fcl/distance.h>
 
 #include "wrapper.h"
 
 typedef fcl::BVHModel<fcl::OBBRSS> ModelData;
+#if FCL_MAJOR_VERSION > 0 || FCL_MINOR_VERSION > 4
+typedef std::shared_ptr<ModelData> Model;
+#else
 typedef boost::shared_ptr<ModelData> Model;
+#endif
 
 fcl_model_t fcl_model_new() {
   return new Model(new ModelData);
