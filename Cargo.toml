@@ -13,7 +13,7 @@ version = "0.0.3"
 repository = "adnanademovic/rust-simple-fcl"
 
 [dependencies]
-nalgebra = "0.13.1"
+nalgebra = "0.16.6"
 
 [dependencies.simple-fcl-sys]
 path = "simple-fcl-sys"
